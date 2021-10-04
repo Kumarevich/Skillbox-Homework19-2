@@ -7,7 +7,7 @@ int main() {
     std::cout << "Input your file path: ";
     std::cin >> filePath;
     std::ifstream file;
-    file.open(filePath);
+    file.open(filePath, std::ios::binary);
 
     while (!file.is_open()) {
         std::cout << "Something goes wrong. Try again ('1' for exit): ";
@@ -16,11 +16,10 @@ int main() {
         file.open(filePath);
     }
     
-    std::string str;
-
-    while (!file.eof()){
-        std::getline(file, str);
-        std::cout << str << std::endl;
+    char buffer[20];
+    while (file.read(buffer, sizeof(buffer) - 1), file.gcount() != 0){
+        buffer[file.gcount()] = 0;
+        std::cout << buffer;
     }
     file.close();
     return 0;
